@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<dashboard>
+  <label>Infrastructure Overview</label>
+  <row>
+    <panel>
+      <title>Failed SSH Logins (Last 24h)</title>
+      <search>
+        <query>index=os sourcetype=linux_secure "Failed password" | timechart count span=1h</query>
+        <earliest>-24h</earliest>
+      </search>
+      <viz type="visualizations.charting.chart">
+        <option name="charting.chart">line</option>
+      </viz>
+    </panel>
+    <panel>
+      <title>Services Down</title>
+      <search>
+        <query>index=os sourcetype=syslog "Failed to start" | stats count by host, service</query>
+      </search>
+      <viz type="visualizations.table"></viz>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Disk Usage > 80%</title>
+      <search>
+        <query>index=os sourcetype=df UsedPct>80 | stats latest(UsedPct) by host, Filesystem</query>
+      </search>
+      <viz type="visualizations.table"></viz>
+    </panel>
+  </row>
+</dashboard>

@@ -1,0 +1,4 @@
+index=os sourcetype=df
+| timechart span=1h avg(UsedPct) as avg_used_pct by host
+| where avg_used_pct > 70
+| sort -avg_used_pct

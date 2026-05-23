@@ -1,0 +1,5 @@
+index=cloudera sourcetype=cloudera_manager_log (ERROR OR WARN OR FATAL)
+| rex field=_raw "(?P<level>ERROR|WARN|FATAL)\s+(?P<component>\S+)\s+(?P<message>.*)"
+| stats count by level, component
+| sort -count
+| head 20

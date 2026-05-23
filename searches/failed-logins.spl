@@ -1,0 +1,6 @@
+index=os sourcetype=linux_secure "Failed password"
+| rex field=_raw "Failed password for (?:invalid user )?(?P<user>\S+) from (?P<src_ip>\S+)"
+| stats count as attempts by user, src_ip
+| where attempts > 5
+| sort -attempts
+| eval risk_level=case(attempts>50,"HIGH", attempts>20,"MEDIUM", true(),"LOW")
